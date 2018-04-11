@@ -119,5 +119,5 @@ app.use(function (req, res, next) {
 
 const server = app.listen(5050, function (err) {
   if (err) return console.log('!!!!!!!!!!!! Server was down with Error =======>', err)
-  else console.log('Server started on port =', 5050)
+  else console.log('Server started on port =', 80)
 })
