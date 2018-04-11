@@ -16,20 +16,23 @@ app.get('/test', function (req, res) {
 
 app.get('/samplejson', function (req, res) {
   var data = [
-    {key1: 'val1', id: 1, Name: 'anil', "Display Name": 'hello'}
-    //{key1: 'val2'},
-    //{key1: 'val3'}
+    {key1: 'val1', id: 1, Name: 'anil', 'Display Name': 'hello'}
+    // {key1: 'val2'},
+    // {key1: 'val3'}
   ]
   console.log('h=/samplejson, sendingData=', JSON.stringify(data))
-  //return server.close(function () {})
+  // return server.close(function () {})
   res.json(data)
 })
 
 app.get('/largeData', function (req, res) {
   var data = []
-  for (let i=0; i< 2900; i++) {
-	  let record = { k: i, v: 'v' + i}
-	  data.push(record)
+  for (let i = 0; i < 2900; i++) {
+    let record = {
+      k: i,
+      v: 'v' + i
+    }
+    data.push(record)
   }
   console.log('h=/largeData, sendingData=', JSON.stringify(data))
   res.json(data)
@@ -86,21 +89,24 @@ app.post('/printm', upload.array('somefile'), function (req, res) {
 })
 
 app.post('/raw', (req, res) => {
-
   // output the headers
-  console.log(req.headers);
+  console.log(req.headers)
 
   // capture the encoded form data
   req.on('data', (data) => {
-    console.log(data.toString());
-  });
+    console.log(data.toString())
+  })
 
   // send a response when finished reading
   // the encoded form data
   req.on('end', () => {
-    res.send('ok');
-  });
-});
+    res.send('ok')
+  })
+})
+
+app.get('/healthCheck', function (req, res) {
+  return res.json({message: 'all good...'})
+})
 
 // app.get('*', function (req, res) {
 //   console.log('h=/Undefined Route=>', req.url, 'headers=', req.headers)
