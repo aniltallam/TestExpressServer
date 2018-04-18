@@ -1,3 +1,4 @@
+const async = require('async')
 var Express = require('express')
 var bodyParser = require('body-parser')
 let multer = require('multer')
@@ -104,6 +105,34 @@ app.post('/raw', (req, res) => {
   })
 })
 
+app.post('/largeText', function (req, res) {
+  var sizeInMb = req.query.sizeinmb || 1
+  sizeInMb = 256
+
+  let str1mb = 'a'
+  // generate 1mb string
+  for (let j = 0; j < 20; j++) {
+    str1mb += str1mb
+  }
+
+  res.set('Content-Type', 'text/plain')
+  res.status(200)
+
+  let i = 0
+  async.whilst(() => { return i < sizeInMb }, (cb) => {
+    res.write(str1mb)
+    i++
+    process.stdout.write('sent size (mb)' + i + '\r')
+    // setImmediate(cb)
+    setTimeout(() => {
+      cb()
+    }, 100)
+  }, () => {
+    process.stdout.write('Done sending 256 mb text.')
+    res.end()
+  })
+})
+
 app.get('/healthCheck', function (req, res) {
   return res.json({message: 'all good...'})
 })
@@ -117,7 +146,7 @@ app.use(function (req, res, next) {
   res.status(404).send("Sorry can't find that!" + req.url + req.method)
 })
 
-const server = app.listen(5050, function (err) {
+const server = app.listen(80, function (err) {
   if (err) return console.log('!!!!!!!!!!!! Server was down with Error =======>', err)
   else console.log('Server started on port =', 80)
 })
